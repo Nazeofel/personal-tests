@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Home</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <!--
+      Need a visual blank slate?
+      Remove all code in `styles.css`!
+    -->
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="script.js"></script>
+    <style>
+      body {
+        background-color: #0d1126;
+      }
+      .robo {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+        color: white;
+      }
+
+      .container {
+        padding: 10px;
+        position: absolute;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+      }
+
+      .top_bar {
+        display: flex;
+        justify-content: space-evenly;
+      }
+
+      .bottom_bar {
+        display: flex;
+        justify-content: space-evenly;
+      }
+
+      svg {
+        height: fit-content;
+      }
+
+      .middle_info {
+        width: inherit;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        padding-block: 300px;
+      }
+
+      .energy {
+        display: flex;
+        gap: 5px;
+      }
+
+      .energy_bar {
+        height: 60px;
+        width: 30px;
+        background-color: #00bfa5;
+        border-style: inset;
+        border-color: #31363c;
+        border-width: 3px;
+      }
+
+      .actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 50%;
+      }
+      .top_action_row {
+        display: flex;
+        width: 100%;
+        justify-content: space-evenly;
+
+        > button {
+          width: 25%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="robo"></div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const robo = document.querySelector('.robo');
+        const svg_top = document.querySelector('#svg_top');
+        const svg_bottom = document.querySelector('#svg_bottom');
+        const container = document.querySelector('.container');
+
+        RenderSvg();
+        const robo_container_styles = window.getComputedStyle(robo);
+        const gap_exist = parseInt(robo_container_styles['column-gap'], 10);
+
+        const robo_gap = isNaN(gap_exist) ? 0 : gap_exist;
+
+        const { height, width } = getContainerComputedHeight(container);
+
+        svg_top.style.height = svg_top.clientHeight + height + 'px';
+        svg_bottom.style.height = svg_bottom.clientHeight + height + 'px';
+
+        const container_size =
+          svg_top.clientHeight +
+          svg_bottom.clientHeight +
+          robo_gap +
+          container.clientHeight;
+
+        const conputed_container_size = container_size - height * (100 / 100);
+        container.style.height = conputed_container_size + 'px';
+        robo.style.height = conputed_container_size + 'px';
+        // svg_top.style.width = svg_top.clientWidth + width + 'px';
+        // svg_bottom.style.width = svg_bottom.clientWidth + width + 'px';
+
+        container.style.width = svg_top.clientWidth + 'px';
+      });
+
+      function getContainerComputedHeight(element) {
+        const styles = window.getComputedStyle(element);
+
+        const marginTop = parseInt(styles.marginTop, 10);
+        const marginRight = parseInt(styles.marginRight, 10);
+        const marginBottom = parseInt(styles.marginBottom, 10);
+        const marginLeft = parseInt(styles.marginLeft, 10);
+
+        const paddingTop = parseInt(styles.paddingTop, 10);
+        const paddingRight = parseInt(styles.paddingRight, 10);
+        const paddingBottom = parseInt(styles.paddingBottom, 10);
+        const paddingLeft = parseInt(styles.paddingLeft, 10);
+
+        return {
+          height: (paddingTop + marginTop + paddingBottom + marginBottom) / 2,
+          width: (paddingRight + marginRight + paddingLeft + marginLeft) / 2,
+        };
+      }
+
+      function RenderSvg() {
+        const width = 800;
+        const height = 600;
+        const angle = 180;
+        document.querySelector('.robo').innerHTML = `
+      <svg
+        id="svg_top"
+        width=${width}
+        viewBox="0 0"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M${angle} 0L ${angle / 2} ${angle}"
+          stroke="#00BFA5"
+          stroke-width="6"
+        />
+        <path
+          d="M${width - angle} 0L ${-(angle / 2) + width} ${angle}"
+          stroke="#00BFA5"
+          stroke-width="6"
+        />
+        <path
+          d="M${angle} 0L ${width - angle} 0"
+          stroke="#00BFA5"
+          stroke-width="6"
+        />
+      </svg>
+
+      <div class="container">
+        <div class="top_bar">
+          <span>Commands Count: 100</span>
+
+          <span>Status: online</span>
+          </div>
+          <div class="middle_info">
+            <div class="energy_infos">
+              <span>Energy Levels</span>
+                <div class="energy">
+                  ${EnergyBar()}
+                  ${EnergyBar()}
+                  ${EnergyBar()}
+                  ${EnergyBar()}
+                  ${EnergyBar()}
+                  ${EnergyBar()}
+                </div>
+                <span>Power: <span> 500 / 1Gb</span> </span>
+              </div>
+
+            <div class="actions">
+              <div class="top_action_row">
+                  <button>Start</button>
+                  <button>Stop</button>
+                </div>
+                <button>Delete</button>
+            </div>
+          </div>
+          <div class="bottom_bar">
+          <span>Commands Count: 100</span>
+
+          <span>Status: online</span>
+          </div>
+      </div>
+
+      <svg
+        id="svg_bottom"
+        width=${width}
+        viewBox="0 0"
+        fill="none"
+
+      transform="rotate(180)"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M${angle} 0L ${angle / 2} ${angle}"
+          stroke="#00BFA5"
+          stroke-width="6"
+        />
+        <path
+          d="M${width - angle} 0L ${-(angle / 2) + width} ${angle}"
+          stroke="#00BFA5"
+          stroke-width="6"
+        />
+        <path
+          d="M${angle} 0L ${width - angle} 0"
+          stroke="#00BFA5"
+          stroke-width="12"
+        />
+      </svg>
+      `;
+      }
+
+      function EnergyBar() {
+        return `
+          <div class="energy_bar">
+
+          </div>
+        `;
+      }
+    </script>
+  </body>
+</html>
