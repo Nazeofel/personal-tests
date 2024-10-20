@@ -1,0 +1,52 @@
+body {
+  display: grid;
+  place-items: center;
+  min-height: 100svh;
+  margin: 0;
+  padding: 0;
+}
+
+.project-container {
+  display: grid;
+  place-items: center;
+  height: 100svh;
+  width: 100%;
+  justify-content: center;
+  background-color: #274156;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: scroll;
+  height: 100px;
+}
+
+.p1 {
+  width: 100px;
+  min-height: 100px;
+  background: blue;
+  opacity: 0;
+  transition: all 1s ease-out;
+}
+.p2 {
+  transition: all 1s ease-out;
+  width: 100px;
+  min-height: 100px;
+  background: blue;
+  transform: translateY(150px);
+  opacity: 0;
+}
+
+.red {
+  width: 100vw;
+  height: 100vh;
+  background: red;
+}
+
+.blue {
+  width: 100vw;
+  height: 100vh;
+  background: aqua;
+}

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <style>
+    :root {
+      --scrolledPixels: 0px;
+    }
+    html {
+      height: 100%;
+    }
+
+    body {
+      min-height: 100%;
+      background-color: #0d1126;
+      display: grid;
+      place-items: center;
+    }
+    .container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 90%;
+    }
+
+    .line,
+    .bottomIcon {
+      position: relative;
+      left: -0.5px;
+    }
+
+    .topIcon {
+      position: relative;
+      right: 0.6px;
+    }
+
+    .text {
+      overflow: scroll;
+      max-height: 100px;
+      text-align: center;
+      width: 90%;
+      z-index: 1;
+      position: relative;
+      color: white;
+    }
+
+    .text::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .scrollbar > .line {
+      background-color: #00bfa5;
+      width: 2px;
+      height: 500px;
+      margin: auto;
+    }
+
+    .line {
+      display: flex;
+      justify-content: center;
+    }
+
+    .line::before {
+      content: url('../RoboNews/ScrollBar/Cursor.svg');
+      display: flex;
+      justify-content: center;
+      transform: scale(1.2) translateY(var(--scrolledPixels)) translateX(-0.1px);
+      height: min-content;
+      transition: all 50ms ease-in;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <img src="../RoboNews/BracketLeft.svg" alt="" class="arrow" />
+      <div class="text">
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+        <div class="red">Hello world</div>
+      </div>
+      <div class="scrollbar">
+        <img class="topIcon" src="../RoboNews/ScrollBar/TopIcon.svg" alt="" />
+        <div class="line"></div>
+        <img src="../RoboNews/ScrollBar/BottomIcon.svg" alt="" />
+      </div>
+      <img
+        class="bottomIcon"
+        src="../RoboNews/BracketRight.svg"
+        alt=""
+        class="arrow"
+      />
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const line = document.querySelector('.line');
+        const textBox = document.querySelector('.text');
+
+        let containerClientHeight = textBox.clientHeight;
+        let scrollBarHeight = line.clientHeight;
+
+        window.addEventListener('resize', () => {
+          containerClientHeight = textBox.clientHeight;
+          scrollBarHeight = line.clientHeight;
+        });
+        function scrollHandler(event) {
+          const scrollTo = calculateScrollBar(event.target.scrollTop);
+          line.style.setProperty('--scrolledPixels', scrollTo + 'px');
+        }
+
+        let lastTime = 0;
+
+        textBox.addEventListener('scroll', (event) => {
+          throttle(event, scrollHandler, 25)();
+        });
+
+        function throttle(event, func, delay) {
+          return function () {
+            const now = new Date();
+            if (now - lastTime >= delay) {
+              func(event);
+              lastTime = now;
+            }
+          };
+        }
+
+        function calculateScrollBar(scrollTop) {
+          if (containerClientHeight >= scrollBarHeight) {
+            const k = parseFloat(
+              `1.${getFirstDigit(containerClientHeight.toFixed(1)) / 2}`
+            );
+            if (scrollTop <= 0) {
+              return scrollTop * k;
+            } else {
+              return scrollTop * k + 15;
+            }
+          } else {
+            const k = getFirstDigit(containerClientHeight.toFixed(1)) / 2.2;
+            if (scrollTop <= 0) {
+              return scrollTop / k;
+            } else {
+              return scrollTop * k;
+            }
+          }
+        }
+        function getFirstDigit(n) {
+          return (n + '').charAt(0);
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/job.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="iframeEmbed">
+        <button class="btn hideWebsite">Go back to Main Site</button>
+        <iframe src="https://robojs.dev/discord-bots/getting-started"></iframe>
+      </div>
+      <div class="project">
+        <div class="title">
+          <span class="p-name"></span>
+          <div class="p-tech">
+            <span></span>
+          </div>
+        </div>
+        <p class="desc"></p>
+        <div class="links">
+          <a href="" class="project-link"></a>
+          <button class="btn showWebsite">See Project</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let projectIndex = 0;
+      const projects = [
+        {
+          title: 'Forum',
+          techno: 'NextJS,Prisma',
+          desc: 'Developed a Forum project using technologies such as NextJS',
+          link: 'https://github.com/',
+        },
+        {
+          title: 'RoboJS',
+          techno: 'NodeJS,NextJS,LotsOfJs',
+          desc: 'EHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH',
+          link: 'https://github.com/',
+        },
+        {
+          title: 'Forum Project',
+          techno: 'Java,Kotlin,Bash',
+          desc: 'AHHHHHHHHHHHHHHHHHHHHHHHHHHHHH',
+          link: 'https://github.com/',
+        },
+      ];
+
+      // find a way to scorll until end of array
+
+      const btn = document.querySelector('.btn');
+      let baboon = false;
+      let canScroll = true;
+      let options = {
+        root: null,
+        rootMargin: '0px',
+        threshold: [0.75, 1],
+      };
+
+      const wrap = document.querySelector('.wrapper');
+
+      document.addEventListener('wheel', (e) => {
+        if (canScroll) {
+          if (isScrollDown(e) === false && baboon) {
+            if (projectIndex + 1 >= projects.length) {
+              return;
+              // perhaps implement going back to zero
+            }
+            projectIndex++;
+            updateProject(projects[projectIndex]);
+
+            console.log(projects[projectIndex]);
+            timeouScroll();
+          } else {
+            //up
+            if (projectIndex - 1 < 0) {
+              return;
+              // perhaps implement going back to zero
+            }
+            projectIndex--;
+            updateProject(projects[projectIndex]);
+            timeouScroll();
+          }
+        }
+      });
+
+      function timeouScroll() {
+        canScroll = false;
+        setTimeout(() => {
+          canScroll = true;
+        }, 100);
+      }
+
+      function isScrollDown(delta) {
+        if (delta.wheelDelta) {
+          return delta.wheelDelta > 0;
+        }
+        return delta.deltaY < 0;
+      }
+
+      const observe = new IntersectionObserver((entries) => {
+        for (entry of entries) {
+          if (entry.intersectionRatio > 0.7) {
+            document.querySelector('body').style.position = 'fixed';
+            baboon = true;
+            updateProject(projects[projectIndex]);
+          }
+        }
+      }, options);
+
+      observe.observe(wrap);
+
+      const iframe = document.querySelector('iframe');
+      const iframeE = document.querySelector('.iframeEmbed');
+      const show = document.querySelector('.showWebsite');
+      const hide = document.querySelector('.hideWebsite');
+      project - lin;
+
+      hide.onclick = () => {
+        iframeE.animate([{ transform: 'translateX(-100vw)' }], {
+          fill: 'forwards',
+          duration: 1000,
+          easing: 'ease-out',
+          iterations: 1,
+        });
+      };
+
+      show.onclick = () => {
+        iframeE.animate([{ transform: 'translateX(0px)' }], {
+          fill: 'forwards',
+          duration: 1000,
+          easing: 'ease-in',
+          iterations: 1,
+        });
+      };
+
+      function updateProject(project) {
+        const pName = document.querySelector('.p-name');
+        const pTech = document.querySelector('.p-tech > span');
+        const desc = document.querySelector('.desc');
+        const pLink = document.querySelector('.project-link');
+
+        const descAnim = desc.animate(
+          [
+            {
+              transform: 'translateY(0px)',
+              opacity: '1',
+            },
+            {
+              opacity: '0.5',
+            },
+            {
+              transform: 'translateY(100px)',
+              opacity: '0',
+            },
+          ],
+          {
+            fill: 'forwards',
+            duration: 300,
+          }
+        );
+
+        if (descAnim.finished) {
+          descAnim.finished
+            .then(() => {
+              desc.textContent = project.desc;
+              desc.animate(
+                [
+                  {
+                    transform: 'translateY(100px)',
+                    opacity: '0',
+                  },
+                  {
+                    opacity: '0.5',
+                  },
+                  {
+                    transform: 'translateY(0px)',
+                    opacity: '1',
+                  },
+                ],
+                {
+                  fill: 'forwards',
+                  duration: 300,
+                }
+              );
+            })
+            .catch((error) => {
+              console.error('Animation failed:', error);
+            });
+        }
+
+        pName.textContent = project.title;
+        pTech.textContent = project.techno;
+        pLink.href = project.link;
+        pLink.textContent = project.link;
+
+        pLink.animate(
+          [
+            {
+              opacity: '0',
+            },
+            {
+              opacity: '0.5',
+            },
+            {
+              opacity: '1',
+            },
+          ],
+          {
+            fill: 'forwards',
+            duration: 500,
+          }
+        );
+
+        pName.animate(
+          [
+            {
+              transform: 'translateY(20px)',
+              opacity: '0',
+            },
+            {
+              opacity: '0.5',
+            },
+            {
+              transform: 'translateY(0px)',
+              opacity: '1',
+            },
+          ],
+          {
+            fill: 'forwards',
+            duration: 500,
+          }
+        );
+        pTech.animate(
+          [
+            {
+              transform: 'translateY(-10px)',
+              opacity: '0',
+            },
+            {
+              opacity: '0.5',
+            },
+            {
+              transform: 'translateY(0px)',
+              opacity: '1',
+            },
+          ],
+          {
+            fill: 'forwards',
+            duration: 500,
+          }
+        );
+      }
+    </script>
+  </body>
+</html>

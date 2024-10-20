@@ -1,0 +1,77 @@
+header {
+  background-color: #b0dff7;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+}
+
+nav > ul {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  list-style: none;
+  font-weight: 500;
+  color: #274156;
+  font-size: 1.25rem;
+}
+
+.header-title {
+  color: #274156;
+  font-weight: bold;
+  font-size: 3rem;
+}
+
+.title-container {
+  text-align: center;
+}
+
+.title-container > span {
+  text-align: center;
+  font-weight: bold;
+  font-size: 3rem;
+}
+
+.title-container :nth-child(1) {
+  font-weight: lighter;
+  font-size: 2.25rem;
+}
+
+.title-container :last-child {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.arrow {
+  animation: arrow 1s ease-in-out infinite alternate;
+}
+
+.arrow:hover {
+  cursor: pointer;
+}
+
+@keyframes arrow {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(15px);
+  }
+}
+
+li {
+  cursor: pointer;
+}
+
+.about-me {
+  background-color: #d9d9d9;
+  width: 100vw;
+  height: 100vh;
+}
+
+button {
+  padding-block: 5px;
+  padding-right: 10px;
+  padding-left: 10px;
+  filter: drop-shadow(0rem 0.15rem 1px black);
+}
